@@ -1,3 +1,5 @@
+%global api 148
+
 Name:           x264-snapshot-20150825
 Version:        2245
 Release:        1%{?dist}
@@ -78,6 +80,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libx264.a
 %{_libdir}/libx264.so
 
+%files libs
+%defattr(644, root, root, 0755)
+%{_libdir}/libx264.so.%{api}
 
 
 %changelog
