@@ -13,6 +13,29 @@ BuildRequires:  yasm
 BuildRequires:  nasm
 
 %description
+x264 is a free library for encoding H264/AVC video streams, written from
+scratch.
+
+
+%package libs
+Summary: Library for encoding H264/AVC video streams
+Group: Development/Libraries
+
+
+%description libs
+x264 is a free library for encoding H264/AVC video streams, written from
+scratch.
+
+%package devel
+Summary: Development files for the x264 library
+Group: Development/Libraries
+Requires: %{name}-libs%{?_isa} = %{version}-%{release}
+Requires: pkgconfig
+
+
+%description devel
+x264 is a free library for encoding H264/AVC video streams, written from
+scratch.
 
 
 %prep
@@ -21,6 +44,8 @@ BuildRequires:  nasm
 
 %build
 ./configure \
+	--prefix="%{_prefix}" \
+	--libdir="%{_libdir}" \
 	--enable-static \
 	--enable-shared 
 
@@ -35,10 +60,23 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %files
 %defattr(-,root,root,-)
-%doc
+%doc AUTHORS COPYING
+%{_bindir}/x264
+%{_libdir}/libx264.so.*
+
+%files devel
+%defattr(-, root, root, 0755)
+%doc doc/*.txt
+%{_includedir}/x264.h
+%{_includedir}/x264_config.h
+%{_libdir}/pkgconfig/x264.pc
+%{_libdir}/libx264.a
+%{_libdir}/libx264.so
 
 
 
